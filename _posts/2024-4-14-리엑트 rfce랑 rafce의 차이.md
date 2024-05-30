@@ -1,6 +1,6 @@
 ---
 key:
-title: '리엑트 정리'
+title: '리엑트 rfce와 farce의 차이점'
 excerpt: '리엑트 정리합니다.'
 tags: [react]
 ---
