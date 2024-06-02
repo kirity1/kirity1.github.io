@@ -2,7 +2,7 @@
 key:
 title: 'plt.subplots()를 이해하기'
 excerpt: 'matpolt를 이해하자'
-tags: [computervison, matplotlib]
+tags: [컴퓨터비전, matplotlib]
 ---
 
 컴퓨터비전을 공부하던 중, 파이썬으로 matplotlib를 이용하다보니, plt.subplots()를 쓰게 됐다, 그래서 이 메소드에 대해서 자세히 알아보고자 한다.
