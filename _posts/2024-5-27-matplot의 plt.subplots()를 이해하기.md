@@ -1,6 +1,6 @@
 ---
 key:
-title: 'plt.subplots()를 이해하기'
+title: 'plt.subplots()에 대해 이해하기'
 excerpt: 'matpolt를 이해하자'
 tags: [컴퓨터비전, matplotlib]
 ---

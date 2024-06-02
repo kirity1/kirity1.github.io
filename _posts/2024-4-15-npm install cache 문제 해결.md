@@ -1,7 +1,7 @@
 ---
 key:
 title: 'npm install cache 문제 해결'
-excerpt: '리엑트네이티브 정리합니다.'
+excerpt: '리엑트네이티브 설정중 문제 해결'
 tags: [react-native]
 ---
 
