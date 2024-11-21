@@ -1,6 +1,6 @@
 ---
 key:
-title: 'whisky 코드를 파헤쳐서 swift를 공부해보자'
+title: 'whisky 코드를 파헤쳐서 swift를 공부해보자-1'
 excerpt: 'swift 정리합니다.'
 tags: [swift]
 ---
