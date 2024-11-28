@@ -1,6 +1,6 @@
 ---
 key:
-title: 'whisky 코드를 파헤쳐서 swift를 공부해보자-1'
+title: 'whisky 코드를 파헤쳐서 swift를 공부-1'
 excerpt: 'swift 정리합니다.'
 tags: [swift]
 ---
@@ -11,7 +11,7 @@ swift 앱에 대해 클론코딩을 하기 위해서 whisky라는 앱의 소스�
 
 ```swift
 @main
-struct WhiskyApp: App {
+struct WhiskyApp: App_ {
     @State var showSetup: Bool = false
     @NSApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     @Environment(\.openURL) var openURL
@@ -60,7 +60,7 @@ struct WhiskyApp: App {  // App 프로토콜을 따르는 WhiskyApp
 
 앱의 상태와 데이터 관리
 
-시스템 이벤트 처리
+​	시스템 이벤트 처리
 
 이러한 것들이 특징인듯 하다.
 
