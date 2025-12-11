@@ -1,0 +1,157 @@
+---
+key:
+title: 'ADS와 하이라이팅등을 통해 그래픽스의 반사 구현'
+excerpt: '그래픽스'
+tags: [그래픽스]
+---
+
+### **조명의 기하학적 모델**
+
+
+
+본 장의 목표는 렌더링 될 각 프래그먼트(fragment)에 대하여, 광원으로부터 도달하는 빛의 **방향 벡터(`lightDir`)**와 거리에 따른 **세기 감쇠율(`attenuation`)**을 계산하는 것이다. 이 단계에서는 색상 정보는 고려되지 않는다.
+
+
+
+#### **1.1. 방향성 조명 (Directional Light)**
+
+
+
+광원이 무한 거리에 존재한다고 가정하여, 모든 광선이 장면에 평행하게 입사하는 모델이다.
+
+- **방향 벡터 계산:** 모든 프래그먼트에서 동일한 방향 벡터를 적용받는다. 이는 `uniform vec3` 변수를 통해 셰이더에 상수로 전달된다.
+- **감쇠율 계산:** 광원까지의 거리가 무한대이므로, 거리에 따른 감쇠는 발생하지 않는다. 따라서 감쇠율은 항상 1.0이다.
+
+
+
+#### **1.2. 점 광원 (Point Light)**
+
+
+
+특정 좌표에 위치하여 모든 방향으로 빛을 방출하는 모델이다.
+
+- **방향 벡터 계산:** 각 프래그먼트마다 `광원의 위치 - 프래그먼트의 위치` 연산을 통해 계산되어야 한다.
+
+  OpenGL Shading Language
+
+  ```
+  // light.position: uniform 변수, 광원의 월드 좌표
+  // FragPos: 버텍스 셰이더에서 보간된 프래그먼트의 월드 좌표
+  vec3 lightDir = normalize(light.position - FragPos);
+  ```
+
+- **감쇠율 계산:** 광원과 프래그먼트 사이의 거리에 따라 빛의 세기가 감소하며, 이는 일반적으로 2차 감쇠 방정식에 의해 모델링된다.
+
+  OpenGL Shading Language
+
+  ```
+  float distance = length(light.position - FragPos);
+  float attenuation = 1.0 / (light.constant + light.linear * distance + light.quadratic * distance * distance);
+  ```
+
+
+
+#### **1.3. 스포트라이트 (Spotlight)**
+
+
+
+점 광원의 속성을 가지나, 빛이 특정 방향을 중심으로 원뿔 형태로 제한되어 방출되는 모델이다.
+
+- **방향 벡터 및 거리 감쇠율 계산:** 점 광원과 동일한 방식으로 계산된다.
+
+- **추가 감쇠율 계산 (원뿔 효과):** 빛의 방향이 스포트라이트의 중심 방향에서 벗어날수록 세기가 감소하는 효과이다.
+
+  OpenGL Shading Language
+
+  ```
+  // light.direction: 스포트라이트의 중심 방향 벡터
+  float theta = dot(lightDir, -light.direction);
+  float epsilon = light.cutoff - light.outerCutoff;
+  float spotlightEffect = clamp((theta - light.outerCutoff) / epsilon, 0.0, 1.0);
+  ```
+
+------
+
+
+
+### ** 빛과 재질의 광학적 상호작용 (ADS 모델)**
+
+
+
+본 장에서는 1부에서 도출된 기하학적 정보(`lightDir`)를 이용하여, 빛과 물체 표면의 상호작용으로 나타나는 색상을 계산하는 방법을 기술한다.
+
+
+
+#### **2.1. 광원의 ADS 속성**
+
+
+
+광원 자체가 방출하는 빛의 색상 및 강도 성분이다.
+
+- `light.ambient`: 전역 환경광 성분
+- `light.diffuse`: 난반사 성분
+- `light.specular`: 정반사 성분
+
+
+
+#### **2.2. 재질의 ADS 속성**
+
+
+
+물체 표면이 입사광을 반사하는 고유한 특성을 나타내는 계수이다.
+
+- `material.ambient`: 주변광에 대한 반사율.
+- `material.diffuse`: 난반사광에 대한 반사율로, 표면의 고유 색상(albedo)을 결정한다.
+- `material.specular`: 정반사광에 대한 반사율로, 표면의 광택 색상을 결정한다.
+- `material.shininess`: 정반사 하이라이트의 집중도를 나타내는 계수.
+
+
+
+#### **2.3. ADS 색상 계산**
+
+
+
+`빛의 속성 × 재질의 속성` 형태의 연산을 통해 각 반사 성분을 계산한다.
+
+OpenGL Shading Language
+
+```
+// Ambient (주변광)
+vec3 ambient = light.ambient * material.ambient;
+
+// Diffuse (난반사)
+vec3 norm = normalize(Normal);
+float diff = max(dot(norm, lightDir), 0.0);
+vec3 diffuse = light.diffuse * (diff * material.diffuse);
+
+// Specular (정반사)
+vec3 viewDir = normalize(viewPos - FragPos);
+vec3 halfwayDir = normalize(lightDir + viewDir);
+float spec = pow(max(dot(norm, halfwayDir), 0.0), material.shininess);
+vec3 specular = light.specular * (spec * material.specular);
+```
+
+------
+
+
+
+### **최종 조명 방정식의 통합**
+
+
+
+마지막으로, 기하학적 계산 결과와 광학적 계산 결과를 통합하여 최종 픽셀 색상을 결정한다.
+
+OpenGL Shading Language
+
+```
+// 2부에서 계산된 ADS 색상 성분을 합산한다.
+vec3 ads_color = ambient + diffuse + specular;
+
+// 1부에서 계산된 기하학적 감쇠율을 모두 곱한다.
+vec3 final_color = ads_color * attenuation * spotlightEffect;
+
+// 최종적으로 텍스처 색상과 조합하여 출력한다.
+FragColor = vec4(final_color * texture(texture_diffuse1, TexCoords).rgb, 1.0);
+```
+
+이와 같이 조명 계산을 기하학적 문제와 광학적 문제로 분리하여 접근하는 것은, 복잡한 셰이더 코드를 체계적으로 설계하고 구현하기 위한 효율적인 방법론이다.
