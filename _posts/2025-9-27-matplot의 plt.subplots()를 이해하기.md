@@ -1,7 +1,7 @@
 ---
 key:
 title: 'plt.subplots()에 대해 이해하기'
-excerpt: 'matpolt를 이해하자'
+excerpt: 'matpolt 이해'
 tags: [컴퓨터비전, matplotlib]
 ---
 
@@ -15,8 +15,8 @@ tags: [컴퓨터비전, matplotlib]
 
 `matplotlib` 라이브러리의 중요한 메소드 중 하나로, 한 번에 여러 개의 서브플롯을 생성할 수 있다. 이 메소드는 다음과 같은 두 가지 주요 객체를 반환한다:
 
-- **Figure 객체**: 전체 플롯의 컨테이너 역할을 합니다.
-- **Axes 객체 배열**: 실제 플롯이 그려지는 개별 영역을 나타냅니다.
+- **Figure 객체**: 전체 플롯의 컨테이너 역할
+- **Axes 객체 배열**: 실제 플롯이 그려지는 개별 영역을 나타냄
 - <img src="https://matplotlib.org/stable/_images/sphx_glr_arranging_axes_002.png" alt="Arranging multiple Axes in a Figure — Matplotlib 3.9.0 documentation"  />
 
 ## 이런 느낌으로 subplots안에는 figure라는 프레임 안에 axes 객체들이 지금 같은 경우에는 2,2 행렬로 있다.

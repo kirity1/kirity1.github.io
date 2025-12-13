@@ -1,6 +1,6 @@
 ---
 key:
-title: '선형대수학 9강 Homogeneous underconstrained linear system equations and Echelon matrix'
+title: '선형대수학 Homogeneous underconstrained linear system equations and Echelon matrix'
 excerpt: '딥러닝을 위해 필요한 내용을 다룹니다.'
 tags: [선형대수학]
 
