@@ -2,10 +2,10 @@
 key:
 title: 'plt.subplots()에 대해 이해하기'
 excerpt: 'matpolt 이해'
-tags: [컴퓨터비전, matplotlib]
+tags: [인공지능]
 ---
 
-컴퓨터비전을 공부하던 중, 파이썬으로 matplotlib를 이용하다보니, plt.subplots()를 쓰게 됐다, 그래서 이 메소드에 대해서 자세히 알아보고자 한다.
+인공지능을 공부하던 중, 파이썬으로 matplotlib를 이용하다보니, plt.subplots()를 쓰게 됐다, 그래서 이 메소드에 대해서 자세히 알아보고자 한다.
 
 먼저 플롯(plot)이란 데이터가 그려진 그래프 비스무리한 그것이라 생각하면 될 듯하다. 즉 이 함수는 그래프를 그릴 때 쓰인다.
 
