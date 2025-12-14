@@ -25,19 +25,19 @@ tags: [인공지능]
 import matplotlib.pyplot as plt
 
 def plot_img(images, titles):
-    # plt.subplots()를 사용하여 1행 n열의 서브플롯을 생성합니다.
+    # plt.subplots()를 사용하여 1행 n열의 서브플롯을 생성.
     fig, axs = plt.subplots(nrows=1, ncols=len(images), figsize=(20, 20))
     
-    # 이미지가 하나일 경우 axs를 리스트로 변환합니다.
+    # 이미지가 하나일 경우 axs를 리스트로 변환.
     if len(images) == 1:
         axs = [axs]
     
-    # 각 축(ax)에 이미지를 표시하고 제목을 설정합니다.
+    # 각 축(ax)에 이미지를 표시하고 제목을 설정.
     for i, ax in enumerate(axs):
         ax.set_title(titles[i])
         ax.imshow(images[i], cmap='gray')
     
-    # 모든 서브플롯을 표시합니다.
+    # 모든 서브플롯을 표시.
     plt.show()
 
 ```
